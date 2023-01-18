@@ -29,7 +29,10 @@ class ChatScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          FirebaseFirestore.instance
+            .collection('chats/X76YqtPJPY8PqKtcq15p/messages').add({'text': 'Have you heard about the word?'});
+        },
       ),
     );
   }
