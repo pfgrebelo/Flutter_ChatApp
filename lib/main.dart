@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/screens/chat_screen.dart';
+import './screens/auth_screen.dart';
+import './screens/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.green,
           ),
-          home: appSnapshot.connectionState == ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : ChatScreen(),
+          home: appSnapshot.connectionState == ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : AuthScreen(),
         );
       },
     );
