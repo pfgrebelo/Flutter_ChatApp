@@ -17,11 +17,12 @@ class MyApp extends StatelessWidget {
       future: _initialization,
       builder: (context, appSnapshot) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.green,
           ),
-          home: const ChatScreen(),
+          home: appSnapshot.connectionState == ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : ChatScreen(),
         );
       },
     );
