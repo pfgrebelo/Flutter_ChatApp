@@ -21,9 +21,34 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
           theme: ThemeData(
-            primarySwatch: Colors.green,
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.teal,
+              backgroundColor: Colors.teal,
+              brightness: Brightness.light,
+            ).copyWith(
+              secondary: Colors.deepPurple,
+            ),
+            canvasColor: Color.fromRGBO(255, 254, 229, 1),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.3,
+                ),
+              ),
+            ),
           ),
-          home: appSnapshot.connectionState == ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : AuthScreen(),
+          home: appSnapshot.connectionState == ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : AuthScreen(),
         );
       },
     );
