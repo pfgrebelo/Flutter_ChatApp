@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -13,6 +13,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   //STARTS FIREBASE AUTH SDK
   final _auth = FirebaseAuth.instance;
+  var _isLoading = false;
 
   //FUNCTON TO SUBMIT AUTH FORM
   void _submitAuthForm(
@@ -25,6 +26,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
     //TRY/CATCH FOR ERROR HANDLING
     try {
+      setState(() {
+        _isLoading = true;
+      });
       //IF ITS LOGIN TRIES TO SIGN IN THE USER
       if (isLogin) {
         authResult = await _auth.signInWithEmailAndPassword(
@@ -55,6 +59,14 @@ class _AuthScreenState extends State<AuthScreen> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         );
+        //ADD EXTRA USER DATA LIKE USERNAME IN A USERS COLLECTION
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(authResult.user!.uid)
+            .set({
+          'username': username,
+          'email': email,
+        });
       }
       //on FirebaseAuthException TO CATCH SPECIFIC ERRORS THROWN BY FIREBASE
     } on FirebaseAuthException catch (error) {
@@ -74,6 +86,9 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
       //CATCH REMAINING ERRORS
     } catch (error) {
       print(error);
@@ -87,6 +102,9 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -94,7 +112,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: AuthForm(_submitAuthForm),
+      body: AuthForm(_submitAuthForm, _isLoading,),
     );
   }
 }
