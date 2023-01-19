@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './screens/auth_screen.dart';
 import './screens/chat_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +30,10 @@ class MyApp extends StatelessWidget {
             ).copyWith(
               secondary: Colors.deepPurple,
             ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+            ),
             canvasColor: const Color.fromRGBO(255, 254, 229, 1),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
@@ -48,7 +53,15 @@ class MyApp extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : AuthScreen(),
+              : StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ChatScreen();
+                    }
+                    return AuthScreen();
+                  },
+                ),
         );
       },
     );
