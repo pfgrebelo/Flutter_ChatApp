@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
             ).copyWith(
               secondary: Colors.deepPurple,
             ),
-            canvasColor: Color.fromRGBO(255, 254, 229, 1),
+            canvasColor: const Color.fromRGBO(255, 254, 229, 1),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
+                /* shape: RoundedRectangleBorder(         //inserted by material3
                   borderRadius: BorderRadius.circular(20),
-                ),
+                ), */
                 backgroundColor: Colors.teal,
                 foregroundColor: Colors.white,
                 textStyle: const TextStyle(
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: appSnapshot.connectionState == ConnectionState.waiting
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : AuthScreen(),
