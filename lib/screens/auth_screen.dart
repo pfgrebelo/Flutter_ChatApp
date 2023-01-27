@@ -71,6 +71,8 @@ class _AuthScreenState extends State<AuthScreen> {
             .child(authResult.user!.uid + '.jpg');
         await ref.putFile(image);
 
+        final url = await ref.getDownloadURL();
+
         //ADD EXTRA USER DATA LIKE USERNAME IN A USERS COLLECTION
         await FirebaseFirestore.instance
             .collection('users')
@@ -78,6 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': username,
           'email': email,
+          'avatar_url' : url,
         });
       }
       //on FirebaseAuthException TO CATCH SPECIFIC ERRORS THROWN BY FIREBASE
