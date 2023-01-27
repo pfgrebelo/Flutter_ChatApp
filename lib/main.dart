@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './screens/auth_screen.dart';
 import './screens/chat_screen.dart';
+import './screens/loading_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
               : StreamBuilder(
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingScreen();
+                    }
                     if (snapshot.hasData) {
                       return ChatScreen();
                     }
