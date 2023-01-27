@@ -26,7 +26,8 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  var _userImageFile;
+  //var _userImageFile;
+  var _userImageFile = File(NetworkImage('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png').toString());
 
   void _pickedImage(File image) {
     _userImageFile = image;
