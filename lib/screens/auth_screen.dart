@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String password,
     String username,
+    File image,
     bool isLogin,
   ) async {
     UserCredential authResult;
@@ -59,6 +63,14 @@ class _AuthScreenState extends State<AuthScreen> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         );
+
+        //SAVES IMAGES ON user_images FOLDER IN THE FIREBASE STORAGE BUCKER WITH THE USER_ID AS FILE NAME
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child(authResult.user!.uid + '.jpg');
+        await ref.putFile(image);
+
         //ADD EXTRA USER DATA LIKE USERNAME IN A USERS COLLECTION
         await FirebaseFirestore.instance
             .collection('users')
@@ -112,7 +124,10 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: AuthForm(_submitAuthForm, _isLoading,),
+      body: AuthForm(
+        _submitAuthForm,
+        _isLoading,
+      ),
     );
   }
 }
